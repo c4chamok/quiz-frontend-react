@@ -6,10 +6,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { ArrowLeft, CheckCircle2, XCircle } from 'lucide-react';
-import { toast } from 'sonner';
+import { toast } from 'react-toastify';
 import axios from 'axios';
 import { BASE_URL } from '@/config';
 import quizIllustration from '@/assets/quiz-illustration.jpg';
+import { cn } from '@/lib/utils';
 
 
 const QuizTest = () => {
@@ -67,7 +68,7 @@ const QuizTest = () => {
 
   const handleSubmit = async () => {
     if (Object.keys(answers).length < questions.length) {
-      toast.error('Please answer all questions before submitting');
+      toast.error('Please answer all questions before submitting', { autoClose: 2000 , position: 'top-center' });
       return;
     }
     const submissionReq = Object.keys(answers).map((id) => {
@@ -103,20 +104,17 @@ const QuizTest = () => {
             Back to Dashboard
           </Button>
 
-          <Card className="shadow-lg border-border/50 mb-8 overflow-hidden animate-in fade-in slide-in-from-top-4 duration-500">
-            <div className="relative h-40 bg-gradient-secondary">
-              <img
-                src={quizIllustration}
-                alt="Quiz questions"
-                className="w-full h-full object-cover opacity-40"
-              />
-              <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
-                <CardTitle className="text-3xl text-white drop-shadow-lg">{quiz.title}</CardTitle>
-                <CardDescription className="text-lg text-white/90 drop-shadow-md mt-2">
-                  {quiz.category} • {questions.length} questions
-                </CardDescription>
+          <Card className="shadow-lg border-border/50 mb-8 animate-in fade-in slide-in-from-top-4 duration-500">
+            <CardHeader className="text-center">
+              <div className={`w-24 h-24 mx-auto mb-4 rounded-full flex items-center justify-center ${percentage >= 70 ? 'bg-green-300/80' : percentage >= 50 ? 'bg-yellow-500/80' : 'bg-red-400/80'
+                }`}>
+                <span className="text-4xl font-bold text-white">{score}/{questions.length}</span>
               </div>
-            </div>
+              <CardTitle className="text-3xl">Quiz Results</CardTitle>
+              <CardDescription className="text-lg">
+                You scored {percentage.toFixed(0)}%
+              </CardDescription>
+            </CardHeader>
           </Card>
 
           <div className="space-y-6">
@@ -181,13 +179,20 @@ const QuizTest = () => {
           Back to Dashboard
         </Button>
 
-        <Card className="shadow-lg border-border/50 mb-8 animate-in fade-in slide-in-from-top-4 duration-500">
-          <CardHeader>
-            <CardTitle className="text-3xl">{quiz.title}</CardTitle>
-            <CardDescription className="text-lg">
-              {quiz.category} • {questions.length} questions
-            </CardDescription>
-          </CardHeader>
+        <Card className="shadow-lg border-border/50 mb-8 overflow-hidden animate-in fade-in slide-in-from-top-4 duration-500">
+          <div className="relative h-40 bg-gradient-secondary">
+            <img 
+              src={quizIllustration} 
+              alt="Quiz questions" 
+              className="w-full h-full object-cover opacity-40"
+            />
+            <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
+              <CardTitle className="text-3xl text-white drop-shadow-lg">{quiz.title}</CardTitle>
+              <CardDescription className="text-lg text-white/90 drop-shadow-md mt-2">
+                {quiz.category} • {questions.length} questions
+              </CardDescription>
+            </div>
+          </div>
         </Card>
 
         <div className="space-y-6 mb-8">
@@ -215,7 +220,7 @@ const QuizTest = () => {
                     {[question.option1, question.option2, question.option3, question.option4].map((option, optIndex) => (
                       <div
                         key={optIndex}
-                        className="flex items-center space-x-3 p-3 rounded-lg border border-border/50 hover:bg-muted/50 transition-all duration-200 cursor-pointer"
+                        className={cn(`flex items-center space-x-3 p-3 rounded-lg border border-border hover:bg-muted transition-all duration-200 cursor-pointer`, answers[question.id] === option ? 'bg-primary/15 border-primary/50' : '')}
                       >
                         <RadioGroupItem value={option} id={`q${question.id}-opt${optIndex}`} />
                         <Label

@@ -26,6 +26,7 @@ export interface QuizContextType {
   questions: Question[];
   createQuiz: (quiz: Omit<Quiz, 'id' | 'questions'>) => Promise<number | null>;
   addQuestion: (question: Omit<Question, 'id' | 'quizId'>) => Promise<string | null>;
+  shuffleQuestions: () => Promise<void>;
   getQuizById: (id: number) => Promise<Quiz | null>;
   // deleteQuiz: (id: number) => Promise<void>;
   // deleteQuestion: (id: number) => Promise<void>;

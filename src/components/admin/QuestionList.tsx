@@ -3,14 +3,15 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Trash2, HelpCircle } from 'lucide-react';
+import { Trash2, HelpCircle, Shuffle } from 'lucide-react';
 import { toast } from 'sonner';
 import questionsIllustration from '@/assets/questions-illustration.jpg';
+import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
 
 const QuestionList = () => {
-  const { questions } = useQuiz();
+  const { questions, shuffleQuestions } = useQuiz();
 
-  const handleDelete = (id: number, questionTitle: string) => {
+  const handleDelete = ( questionTitle: string) => {
     if (window.confirm(`Are you sure you want to delete "${questionTitle}"?`)) {
       // deleteQuestion(id);
       toast.success('Question deleted successfully');
@@ -33,9 +34,9 @@ const QuestionList = () => {
     <div className="space-y-4">
       <div className="relative mb-6 overflow-hidden rounded-2xl shadow-lg">
         <div className="absolute inset-0 bg-gradient-secondary opacity-80"></div>
-        <img 
-          src={questionsIllustration} 
-          alt="Question bank illustration" 
+        <img
+          src={questionsIllustration}
+          alt="Question bank illustration"
           className="w-full h-48 object-cover opacity-30"
         />
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
@@ -47,12 +48,24 @@ const QuestionList = () => {
       </div>
 
       <Card className="shadow-md border-border/50">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <HelpCircle className="w-5 h-5" />
-            Question Bank
-          </CardTitle>
-          <CardDescription>Manage all questions across all quizzes</CardDescription>
+        <CardHeader className='w-full flex justify-between'>
+          <div>
+            <CardTitle className="flex items-center gap-2">
+              <HelpCircle className="w-5 h-5" />
+              Question Bank
+            </CardTitle>
+            <CardDescription>Manage all questions across all quizzes</CardDescription>
+          </div>
+          <div>
+            <Button variant='default' onClick={async ()=> await shuffleQuestions()}>
+              <Tooltip>
+                <TooltipTrigger><Shuffle/></TooltipTrigger>
+                <TooltipContent>
+                  <p>Shuffle</p>
+                </TooltipContent>
+              </Tooltip>
+            </Button>
+          </div>
         </CardHeader>
         <CardContent>
           <div className="overflow-x-auto">
@@ -84,13 +97,13 @@ const QuestionList = () => {
                         <Badge variant="outline">{question.category}</Badge>
                       </TableCell>
                       <TableCell>
-                        <Badge 
+                        <Badge
                           variant={
-                            question.difficultyLevel === 'easy' 
-                              ? 'default' 
-                              : question.difficultyLevel === 'medium' 
-                              ? 'secondary' 
-                              :"destructive"
+                            question.difficultyLevel === 'easy'
+                              ? 'default'
+                              : question.difficultyLevel === 'medium'
+                                ? 'secondary'
+                                : "destructive"
                           }
                         >
                           {question.difficultyLevel}
@@ -101,7 +114,7 @@ const QuestionList = () => {
                         <Button
                           variant="ghost"
                           size="icon"
-                          onClick={() => handleDelete(question.id, question.questionTitle)}
+                          onClick={() => handleDelete(question.questionTitle)}
                           className="text-destructive hover:bg-destructive/10 hover:text-destructive"
                         >
                           <Trash2 className="w-4 h-4" />

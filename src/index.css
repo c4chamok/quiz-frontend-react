@@ -96,15 +96,51 @@
 /* -------------------------------------------------
    🧩 RESTORE YOUR CUSTOM UTILITIES
    ------------------------------------------------- */
+
+@theme inline {
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground)); 
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-success: hsl(var(--success));
+  --color-success-foreground: hsl(var(--success-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-border: hsl(var(--border));
+  --radius: var(--radius);
+  --shadow-sm: var(--shadow-sm);
+  --shadow-md: var(--shadow-md);
+  --shadow-lg: var(--shadow-lg);
+  --gradient-primary: var(--gradient-primary);
+  --gradient-secondary: var(--gradient-secondary);
+  --gradient-vibrant: var(--gradient-vibrant);
+  --gradient-success: var(--gradient-success);
+  --gradient-card: var(--gradient-card);
+}
+
+
 @layer utilities {
-  .bg-background {
+  /* .bg-background {
     background-color: hsl(var(--background));
+  }
+
+  .bg-muted {
+    background-color: hsl(var(--muted));
+  }
+
+  .bg-primary {
+    background-color: hsl(var(--primary));
   }
 
   .bg-card {
     background-color: hsl(var(--card));
-  }
+  } */
 
+  
   .bg-gradient-primary {
     background-image: var(--gradient-primary);
   }
@@ -139,11 +175,11 @@
     color: hsl(var(--primary-foreground));
   }
 
-  .border-border {
+  /* .border-border {
     border-color: hsl(var(--border));
-  }
+  } */
 
-  .shadow-sm {
+  /* .shadow-sm {
     box-shadow: var(--shadow-sm);
   }
 
@@ -153,9 +189,9 @@
 
   .shadow-lg {
     box-shadow: var(--shadow-lg);
-  }
+  } */
 
-  .rounded-theme {
+  /* .rounded-theme {
     border-radius: var(--radius);
-  }
+  } */
 }

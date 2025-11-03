@@ -9,6 +9,7 @@ import QuestionForm from '@/components/admin/QuestionForm';
 import QuizList from '@/components/admin/QuizList';
 import QuestionList from '../admin/QuestionList';
 import adminHero from '@/assets/admin-hero.jpg';
+import { cn } from '@/lib/utils';
 
 const AdminDashboard = () => {
   const { user, logout } = useAuth();
@@ -60,16 +61,16 @@ const AdminDashboard = () => {
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
           <TabsList className="grid w-full max-w-md grid-cols-4 bg-muted/50">
-            <TabsTrigger value="quizzes" className="data-[state=active]:bg-gradient-primary data-[state=active]:text-primary-foreground">
+            <TabsTrigger value="quizzes" className={cn("data-[state=active]:text-primary-foreground", activeTab ==='quizzes' ? "bg-gradient-primary" : "")}>
               Quizzes
             </TabsTrigger>
-            <TabsTrigger value="questions" className="data-[state=active]:bg-gradient-primary data-[state=active]:text-primary-foreground">
+            <TabsTrigger value="questions" className={cn("data-[state=active]:text-primary-foreground", activeTab ==='questions' ? "bg-gradient-primary" : "")}>
               All Questions
             </TabsTrigger>
-            <TabsTrigger value="create-quiz" className="data-[state=active]:bg-gradient-primary data-[state=active]:text-primary-foreground">
+            <TabsTrigger value="create-quiz" className={cn("data-[state=active]:text-primary-foreground", activeTab ==='create-quiz' ? "bg-gradient-primary" : "")}>
               Create Quiz
             </TabsTrigger>
-            <TabsTrigger value="add-question" className="data-[state=active]:bg-gradient-primary data-[state=active]:text-primary-foreground">
+            <TabsTrigger value="add-question" className={cn("data-[state=active]:text-primary-foreground", activeTab ==='add-question' ? "bg-gradient-primary" : "")}>
               Add Question
             </TabsTrigger>
           </TabsList>

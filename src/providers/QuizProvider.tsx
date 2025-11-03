@@ -19,6 +19,11 @@ export const QuizProvider: React.FC<{ children: React.ReactNode }> = ({ children
     fetchQuizAndQuestions();
   }, [])
 
+  const shuffleQuestions = async () => {
+    const { data } = await axios.get<Question[]>(`${BASE_URL}/question/questions/shuffle`);
+    setQuestions(data);
+  }
+
   const createQuiz = async (quiz: Omit<Quiz, 'id' | 'questions'>) => {
     try {
       const { data } = await axios.post<number>(
@@ -66,6 +71,7 @@ export const QuizProvider: React.FC<{ children: React.ReactNode }> = ({ children
       value={{
         quizzes,
         questions,
+        shuffleQuestions,
         createQuiz,
         addQuestion,
         getQuizById,
