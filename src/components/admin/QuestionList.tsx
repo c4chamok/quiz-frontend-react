@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Trash2, HelpCircle } from 'lucide-react';
 import { toast } from 'sonner';
+import questionsIllustration from '@/assets/questions-illustration.jpg';
 
 const QuestionList = () => {
   const { questions } = useQuiz();
@@ -30,11 +31,19 @@ const QuestionList = () => {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <h3 className="text-2xl font-bold text-foreground">All Questions</h3>
-        <p className="text-sm text-muted-foreground">
-          Total: {questions.length} questions
-        </p>
+      <div className="relative mb-6 overflow-hidden rounded-2xl shadow-lg">
+        <div className="absolute inset-0 bg-gradient-secondary opacity-80"></div>
+        <img 
+          src={questionsIllustration} 
+          alt="Question bank illustration" 
+          className="w-full h-48 object-cover opacity-30"
+        />
+        <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
+          <h3 className="text-3xl font-bold text-white mb-2 drop-shadow-lg">All Questions</h3>
+          <p className="text-white drop-shadow-md">
+            Total: {questions.length} questions in your question bank
+          </p>
+        </div>
       </div>
 
       <Card className="shadow-md border-border/50">

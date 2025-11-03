@@ -8,6 +8,7 @@ import QuizForm from '@/components/admin/QuizForm';
 import QuestionForm from '@/components/admin/QuestionForm';
 import QuizList from '@/components/admin/QuizList';
 import QuestionList from '../admin/QuestionList';
+import adminHero from '@/assets/admin-hero.jpg';
 
 const AdminDashboard = () => {
   const { user, logout } = useAuth();
@@ -32,8 +33,8 @@ const AdminDashboard = () => {
               <p className="text-sm text-muted-foreground">Welcome, {user?.username}</p>
             </div>
           </div>
-          <Button 
-            onClick={handleLogout} 
+          <Button
+            onClick={handleLogout}
             variant="outline"
             className="gap-2 hover:bg-destructive/10 hover:text-destructive hover:border-destructive/50 transition-all duration-200"
           >
@@ -44,6 +45,19 @@ const AdminDashboard = () => {
       </header>
 
       <main className="container mx-auto px-4 py-8">
+        <div className="relative mb-8 overflow-hidden rounded-2xl shadow-lg animate-in fade-in slide-in-from-top-4 duration-500">
+          <div className="absolute inset-0 bg-gradient-primary opacity-90"></div>
+          <img
+            src={adminHero}
+            alt="Admin managing quizzes"
+            className="w-full h-56 object-cover opacity-30"
+          />
+          <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
+            <h2 className="text-4xl font-bold text-white mb-3 drop-shadow-lg">Quiz Management</h2>
+            <p className="text-white text-lg drop-shadow-md">Create, organize, and manage all your quizzes and questions</p>
+          </div>
+        </div>
+
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
           <TabsList className="grid w-full max-w-md grid-cols-4 bg-muted/50">
             <TabsTrigger value="quizzes" className="data-[state=active]:bg-gradient-primary data-[state=active]:text-primary-foreground">

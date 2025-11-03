@@ -9,6 +9,8 @@ import { ArrowLeft, CheckCircle2, XCircle } from 'lucide-react';
 import { toast } from 'sonner';
 import axios from 'axios';
 import { BASE_URL } from '@/config';
+import quizIllustration from '@/assets/quiz-illustration.jpg';
+
 
 const QuizTest = () => {
   const { id } = useParams<{ id: string }>();
@@ -101,17 +103,20 @@ const QuizTest = () => {
             Back to Dashboard
           </Button>
 
-          <Card className="shadow-lg border-border/50 mb-8 animate-in fade-in slide-in-from-top-4 duration-500">
-            <CardHeader className="text-center">
-              <div className={`w-24 h-24 mx-auto mb-4 rounded-full flex items-center justify-center ${percentage >= 70 ? 'bg-green-300/80' : percentage >= 50 ? 'bg-yellow-500/80' : 'bg-red-400/80'
-                }`}>
-                <span className="text-4xl font-bold text-white">{score}/{questions.length}</span>
+          <Card className="shadow-lg border-border/50 mb-8 overflow-hidden animate-in fade-in slide-in-from-top-4 duration-500">
+            <div className="relative h-40 bg-gradient-secondary">
+              <img
+                src={quizIllustration}
+                alt="Quiz questions"
+                className="w-full h-full object-cover opacity-40"
+              />
+              <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
+                <CardTitle className="text-3xl text-white drop-shadow-lg">{quiz.title}</CardTitle>
+                <CardDescription className="text-lg text-white/90 drop-shadow-md mt-2">
+                  {quiz.category} • {questions.length} questions
+                </CardDescription>
               </div>
-              <CardTitle className="text-3xl">Quiz Results</CardTitle>
-              <CardDescription className="text-lg">
-                You scored {percentage.toFixed(0)}%
-              </CardDescription>
-            </CardHeader>
+            </div>
           </Card>
 
           <div className="space-y-6">

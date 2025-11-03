@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { BookOpen, LogOut, Search, FileText, Tag } from 'lucide-react';
+import studentHero from '@/assets/student-hero.jpg';
 
 const StudentDashboard = () => {
   const { user, logout } = useAuth();
@@ -69,9 +70,17 @@ const StudentDashboard = () => {
       </header>
 
       <main className="container mx-auto px-4 py-8">
-        <div className="mb-8 animate-in fade-in slide-in-from-top-4 duration-500">
-          <h2 className="text-3xl font-bold text-foreground mb-2">Available Quizzes</h2>
-          <p className="text-muted-foreground">Choose a quiz to test your knowledge</p>
+        <div className="relative mb-8 overflow-hidden rounded-2xl shadow-lg animate-in fade-in slide-in-from-top-4 duration-500">
+          <div className="absolute inset-0 bg-gradient-vibrant opacity-90"></div>
+          <img
+            src={studentHero}
+            alt="Students taking online quizzes"
+            className="w-full h-64 object-cover opacity-40"
+          />
+          <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
+            <h2 className="text-4xl font-bold text-white mb-3 drop-shadow-lg">Available Quizzes</h2>
+            <p className="text-white text-lg drop-shadow-md">Choose a quiz to test your knowledge and track your progress</p>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 animate-in fade-in slide-in-from-top-4 duration-700">
