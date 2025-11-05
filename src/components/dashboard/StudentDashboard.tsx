@@ -5,8 +5,9 @@ import { useNavigate } from 'react-router';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { BookOpen, LogOut, Search, FileText, Tag } from 'lucide-react';
+import { BookOpen, LogOut, Search, FileText, Tag, Lock } from 'lucide-react';
 import studentHero from '@/assets/student-hero.jpg';
 
 const StudentDashboard = () => {
@@ -16,6 +17,7 @@ const StudentDashboard = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
   const [questionsFilter, setQuestionsFilter] = useState<string>('all');
+  const [showPremiumModal, setShowPremiumModal] = useState(false);
 
   const categories = useMemo(() => {
     const cats = Array.from(new Set(quizzes.map(q => q.category)));
@@ -41,7 +43,15 @@ const StudentDashboard = () => {
     navigate('/login');
   };
 
-  const startQuiz = (quizId: number) => {
+  const handleLockedQuizClick = () => {
+    setShowPremiumModal(true);
+  };
+
+  const startQuiz = (quizId: number, index: number) => {
+    if (index > 3) {
+      setShowPremiumModal(true);
+      return;
+    }
     navigate(`/quiz/${quizId}`);
   };
 
@@ -129,41 +139,73 @@ const StudentDashboard = () => {
           </Card>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredQuizzes.map((quiz, index) => (
-              <Card
-                key={quiz.id}
-                className="shadow-md border-border/50 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 animate-in fade-in slide-in-from-bottom-4"
-                style={{ animationDelay: `${index * 100}ms` }}
-              >
-                <CardHeader>
-                  <div className="flex items-start justify-between mb-2">
-                    <div className="w-12 h-12 bg-gradient-primary rounded-xl flex items-center justify-center shadow-md">
-                      <BookOpen className="w-6 h-6 text-primary-foreground" />
+            {filteredQuizzes.map((quiz, index) => {
+              const isLocked = index > 3;
+              return (
+                <Card
+                  key={quiz.id}
+                  className={`shadow-md border-border/50 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 animate-in fade-in slide-in-from-bottom-4 relative ${isLocked ? 'cursor-pointer' : ''}`}
+                  style={{ animationDelay: `${index * 100}ms` }}
+                  onClick={isLocked ? handleLockedQuizClick : undefined}
+                >
+                  {isLocked && (
+                    <div className="absolute inset-0 backdrop-blur-sm bg-background/30 rounded-lg z-10 flex items-center justify-center">
+                      <div className="bg-card/90 p-4 rounded-xl shadow-lg border border-border/50">
+                        <Lock className="w-8 h-8 text-primary mx-auto mb-2" />
+                        <p className="text-sm font-semibold text-foreground">Premium Quiz</p>
+                      </div>
                     </div>
-                  </div>
-                  <CardTitle className="text-xl">{quiz.title}</CardTitle>
-                  <CardDescription className="flex items-center gap-2">
-                    <Tag className="w-4 h-4" />
-                    {quiz.category}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <FileText className="w-4 h-4" />
-                    <span>{quiz.numOfQuestions} questions</span>
-                  </div>
-                  <Button
-                    onClick={() => startQuiz(quiz.id)}
-                    className="w-full bg-gradient-primary hover:opacity-90 transition-all duration-200"
-                  >
-                    Start Quiz
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
+                  )}
+                  <CardHeader className={isLocked ? 'blur-sm' : ''}>
+                    <div className="flex items-start justify-between mb-2">
+                      <div className="w-12 h-12 bg-gradient-primary rounded-xl flex items-center justify-center shadow-md">
+                        <BookOpen className="w-6 h-6 text-primary-foreground" />
+                      </div>
+                    </div>
+                    <CardTitle className="text-xl">{quiz.title}</CardTitle>
+                    <CardDescription className="flex items-center gap-2">
+                      <Tag className="w-4 h-4" />
+                      {quiz.category}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className={`space-y-4 ${isLocked ? 'blur-sm' : ''}`}>
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <FileText className="w-4 h-4" />
+                      <span>{quiz.numOfQuestions} questions</span>
+                    </div>
+                    <Button
+                      onClick={(e) => {
+                        if (!isLocked) {
+                          e.stopPropagation();
+                          startQuiz(quiz.id, index);
+                        }
+                      }}
+                      className="w-full bg-gradient-primary hover:opacity-90 transition-all duration-200"
+                      disabled={isLocked}
+                    >
+                      Start Quiz
+                    </Button>
+                  </CardContent>
+                </Card>
+              );
+            })}
           </div>
         )}
       </main>
+      <Dialog open={showPremiumModal} onOpenChange={setShowPremiumModal}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <div className="mx-auto mb-4 w-16 h-16 bg-gradient-primary rounded-full flex items-center justify-center">
+              <Lock className="w-8 h-8 text-primary-foreground" />
+            </div>
+            <DialogTitle className="text-center text-2xl">Upgrade to Premium</DialogTitle>
+            <DialogDescription className="text-center pt-4">
+              Unlock access to all quizzes and enhance your learning experience with our premium membership.
+              Get unlimited access to advanced quizzes and exclusive content.
+            </DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
